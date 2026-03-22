@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - VEXON Streetwear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="/">VEXON</a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/products/add">Add Product</a>
+        <a href="/admin/categories">Categories</a>
+        <a href="/admin/sizes">Sizes</a>
+        <a href="/admin/contact">Contact</a>
+        <% if (user.role === 'owner') { %>
+          <a href="/owner">Owner</a>
+        <% } %>
+      </nav>
+      <div class="header-actions">
+        <a href="/admin" class="btn btn-secondary">Admin Dashboard</a>
+        <form action="/auth/logout" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-tertiary">Logout</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <section class="section admin-section">
+    <div class="container">
+      <h1>Admin Dashboard</h1>
+      
+      <% if (success) { %>
+        <div style="color: green; margin-bottom: 1rem; display: flex; align-items: center;">
+          <span style="margin-right: 0.5rem;">✓</span>
+          <%= success %>
+        </div>
+      <% } %>
+      
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <h3><%= products.length %></h3>
+          <p>Total Products</p>
+        </div>
+        <div class="stat-card">
+          <h3><%= categories.length %></h3>
+          <p>Categories</p>
+        </div>
+        <div class="stat-card">
+          <h3><%= sizes.length %></h3>
+          <p>Sizes</p>
+        </div>
+      </div>
+      
+      <h2>Products</h2>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(product => { %>
+            <tr>
+              <td><%= product.id %></td>
+              <td><%= product.name %></td>
+              <td><%= new Intl.NumberFormat('en-US').format(product.price) %> IQD</td>
+              <td><%= product.category %></td>
+              <td><%= product.stock %></td>
+              <td>
+                <a href="/admin/products/<%= product.id %>/edit" class="btn btn-secondary">Edit</a>
+                <form action="/admin/products/<%= product.id %>?_method=DELETE" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-tertiary" onclick="return confirm('Delete this product?')">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-logo"><h3>VEXON</h3></div>
+      <div class="footer-nav"><a href="/">Home</a><a href="/men">Men</a><a href="/women">Women</a><a href="/kids">Kids</a><a href="/contact">Contact</a></div>
+      <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 VEXON Streetwear. All rights reserved.</p></div>
+  </footer>
+</body>
+</html>

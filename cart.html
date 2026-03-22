@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart / Checkout - VEXON</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@0.3.8/dist/lenis.min.js"></script>
+  <script defer src="https://kit.fontawesome.com/1d5f6e6140.js" crossorigin="anonymous"></script>
+  <script defer src="scripts.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">VEXON</a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="men.html">Men</a>
+        <a href="women.html">Women</a>
+        <a href="kids.html">Kids</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h1>Your Cart</h1>
+      <div id="cartPageItems"></div>
+      <div class="cart-summary" style="margin-top:1rem;"><span>Total:</span><strong id="cartPageTotal">0 IQD</strong></div>
+      <button id="checkoutCta" class="btn btn-primary">Proceed with Cash on Delivery</button>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-logo"><h3>VEXON</h3></div>
+      <div class="footer-nav"><a href="index.html">Home</a><a href="men.html">Men</a><a href="women.html">Women</a><a href="kids.html">Kids</a><a href="contact.html">Contact</a></div>
+      <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 VEXON Streetwear. All rights reserved.</p></div>
+  </footer>
+
+  <script>
+    function renderCartPage(){
+      const cart = JSON.parse(localStorage.getItem('vexon-cart')||'[]');
+      const container = document.getElementById('cartPageItems');
+      container.innerHTML='';
+      let total=0;
+      if(cart.length===0){ container.textContent='Your cart is empty.'; return; }
+      cart.forEach(({id,qty}) => {
+        const product = products.find(p=>p.id===id);
+        if(!product) return;
+        const line = product.price*qty; total += line;
+        const row = document.createElement('div'); row.className='cart-item';
+        row.innerHTML = `<img src="${product.image}" alt="${product.name}" /><div class="cart-item-details"><h4>${product.name}</h4><p>${new Intl.NumberFormat('en-US').format(product.price)} IQD x ${qty}</p><p>${new Intl.NumberFormat('en-US').format(line)} IQD</p></div>`;
+        container.appendChild(row);
+      });
+      document.getElementById('cartPageTotal').textContent=new Intl.NumberFormat('en-US').format(total)+' IQD';
+    }
+    document.getElementById('checkoutCta').addEventListener('click', () => alert('Your Cash on Delivery order has been placed.')); renderCartPage();
+  </script>
+</body>
+</html>

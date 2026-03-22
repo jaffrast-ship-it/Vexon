@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VEXON Product</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="https://kit.fontawesome.com/1d5f6e6140.js" crossorigin="anonymous"></script>
+  <script defer>
+    const products = [
+      { id:'hoodie-black', name:'Oversized Black Hoodie', price:35000, image:'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1200&q=80', video:'https://cdn.coverr.co/videos/coverr-street-fashion-5903/720p.mp4', description:'Premium oversized black hoodie with reinforced stitching and modern silhouette.' },
+      { id:'urban-graphic', name:'Urban Graphic T-Shirt', price:20000, image:'https://images.unsplash.com/photo-1593032457869-75109efb44d4?auto=format&fit=crop&w=1200&q=80', video:'https://cdn.coverr.co/videos/coverr-street-fashion-5837/720p.mp4', description:'Soft cotton graphic tee. A streetwear essential with bold print.' },
+      { id:'slim-jeans', name:'Slim Denim Jeans', price:40000, image:'https://images.unsplash.com/photo-1572560603300-57246b47fc8e?auto=format&fit=crop&w=1200&q=80', video:'https://cdn.coverr.co/videos/coverr-urban-fashion-4041/720p.mp4', description:'Comfortable slim denim jeans with stretch for active movement.' },
+      { id:'cargo-pants', name:'Street Cargo Pants', price:38000, image:'https://images.unsplash.com/photo-1589318238176-3ec0cf50b3f4?auto=format&fit=crop&w=1200&q=80', video:'https://cdn.coverr.co/videos/coverr-urban-male-5909/720p.mp4', description:'Relaxed-fit cargo pants with smart pockets for everyday urban efficiency.'},
+      { id:'minimalist-hoodie', name:'Minimalist Hoodie', price:30000, image:'https://images.unsplash.com/photo-1532250488063-8847f678c4c4?auto=format&fit=crop&w=1200&q=80', video:'https://cdn.coverr.co/videos/coverr-fashion-model-6279/720p.mp4', description:'Sleek minimalist hoodie in charcoal for modern layered styling.'},
+      { id:'street-jacket', name:'Classic Street Jacket', price:55000, image:'https://images.unsplash.com/photo-1555529771-6f4d4d3db9ed?auto=format&fit=crop&w=1200&q=80', video:'https://cdn.coverr.co/videos/coverr-urban-2372/720p.mp4', description:'City-ready street jacket in high-quality material with heritage vibe.'}
+    ];
+
+    function getQueryParam(name){ return new URLSearchParams(window.location.search).get(name); }
+    const targetId = getQueryParam('id') || products[0].id;
+    const product = products.find(p => p.id === targetId);
+    const formatIQD=v=>new Intl.NumberFormat('en-US').format(v)+' IQD';
+    window.addEventListener('DOMContentLoaded', ()=>{
+      if(!product){ document.body.innerHTML='<div style="padding:4rem;color:#fff;text-align:center;">Product not found.</div>'; return; }
+      document.getElementById('productName').textContent = product.name;
+      document.getElementById('productPrice').textContent = formatIQD(product.price);
+      document.getElementById('productDescription').textContent = product.description;
+      document.getElementById('productMainImage').src = product.image;
+      document.getElementById('productVideo').src = product.video;
+      document.getElementById('addToCart').addEventListener('click', ()=>{
+        const qty=Number(document.getElementById('productQuantity').value);
+        const cart = JSON.parse(localStorage.getItem('vexon-cart')||'[]');
+        const exists = cart.find(i=>i.id===product.id);
+        if(exists) exists.qty += qty; else cart.push({id:product.id,qty});
+        localStorage.setItem('vexon-cart', JSON.stringify(cart));
+        alert('Added to cart');
+      });
+    });
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">VEXON</a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="#">Men</a>
+        <a href="#">Women</a>
+        <a href="#">Kids</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main class="section" style="padding-top:2rem;">
+    <div class="container product-page">
+      <div class="product-grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div class="product-media" style="height: 460px;">
+          <img id="productMainImage" src="" alt="Product image" />
+          <video id="productVideo" controls style="margin-top:1rem;width:100%;height:260px;object-fit:cover;"></video>
+        </div>
+        <div class="product-info" style="padding:0;">
+          <h2 id="productName"></h2>
+          <p id="productPrice" style="color:var(--accent-2);font-size:1.5rem;margin:0.4rem 0;"></p>
+          <div class="sizes" style="margin:1rem 0;">
+            <label style="display:block;margin-bottom:0.3rem;">Size</label>
+            <select id="productSize" style="padding:0.7rem;width:100%;background:var(--surface-2);color:#fff;border:1px solid var(--border);border-radius:0.6rem;">
+              <option value="S">S</option>
+              <option value="M" selected>M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <div class="quantity" style="margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem;">
+            <label for="productQuantity">Quantity</label>
+            <input id="productQuantity" type="number" value="1" min="1" style="width:70px;padding:0.6rem;border:1px solid var(--border);border-radius:0.5rem;background:var(--surface-2);color:#fff;" />
+          </div>
+          <button id="addToCart" class="btn btn-primary">Add to Cart</button>
+          <div style="margin-top:1.3rem;"><h3>Description</h3><p id="productDescription" style="color:var(--muted);"></p></div>
+          <div style="margin-top:1.5rem;"><h3>Customer Reviews</h3>
+            <article style="background:var(--surface-2);border:1px solid var(--border);border-radius:0.7rem;padding:1rem;margin-top:0.6rem;">
+              <strong>Mustafa A.</strong>
+              <p>Excellent material and fit. I feel confident wearing this everywhere.</p>
+            </article>
+            <article style="background:var(--surface-2);border:1px solid var(--border);border-radius:0.7rem;padding:1rem;margin-top:0.6rem;">
+              <strong>Rana H.</strong>
+              <p>Fast shipping in Iraq, seamless experience with Cash on Delivery.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

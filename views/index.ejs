@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VEXON Streetwear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@0.3.8/dist/lenis.min.js"></script>
+  <script defer src="https://kit.fontawesome.com/1d5f6e6140.js" crossorigin="anonymous"></script>
+  <script>
+    const products = <%- JSON.stringify(products) %>;
+  </script>
+  <script defer src="/scripts.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="/">VEXON</a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="#hero">Home</a>
+        <a href="#categories">Men</a>
+        <a href="#categories">Women</a>
+        <a href="#categories">Kids</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <% if (user) { %>
+          <a href="/dashboard" class="btn btn-secondary">Dashboard</a>
+          <form action="/auth/logout" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-tertiary">Logout</button>
+          </form>
+        <% } else { %>
+          <a href="/auth/login" class="btn btn-secondary">Login</a>
+          <a href="/auth/signup" class="btn btn-primary">Sign Up</a>
+        <% } %>
+        <button class="icon-btn" aria-label="Wishlist" id="wishlistToggle"><i class="fas fa-heart"></i></button>
+        <button class="icon-btn" aria-label="Cart" id="cartToggle"><i class="fas fa-shopping-bag"></i><span id="cartCount">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <section id="hero" class="hero">
+    <div class="hero-bg">
+      <video autoplay muted loop playsinline>
+        <source src="https://cdn.coverr.co/videos/coverr-dark-street-style-7313/1080p.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <h1>VEXON STREETWEAR</h1>
+      <p>Bold street fashion for the new generation.</p>
+      <div class="hero-buttons">
+        <a class="btn btn-primary" href="#category-men">Shop Men</a>
+        <a class="btn btn-secondary" href="#category-women">Shop Women</a>
+        <a class="btn btn-secondary" href="#category-kids">Shop Kids</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="circleSection" class="section section-gallery" aria-label="Scroll rotating product categories">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Explore Categories</h2>
+        <p>Our signature scroll-driven rotating circle. Drag or scroll to turn.</p>
+      </div>
+      <div class="circle-gallery-wrapper">
+        <div id="circleGallery" class="circle-gallery">
+          <div class="circle-frame" id="circleFrame">
+            <a class="circle-item" data-category="men" href="/men" aria-label="Men">
+              <div class="circle-image" style="background-image:url('https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=400&q=80');"></div>
+              <span class="circle-label">Men</span>
+            </a>
+            <a class="circle-item" data-category="women" href="/women" aria-label="Women">
+              <div class="circle-image" style="background-image:url('https://images.unsplash.com/photo-1520975917406-904b60172164?auto=format&fit=crop&w=400&q=80');"></div>
+              <span class="circle-label">Women</span>
+            </a>
+            <a class="circle-item" data-category="kids" href="/kids" aria-label="Kids">
+              <div class="circle-image" style="background-image:url('https://images.unsplash.com/photo-1574069284828-d8361d0c1b12?auto=format&fit=crop&w=400&q=80');"></div>
+              <span class="circle-label">Kids</span>
+            </a>
+            <a class="circle-item" data-category="hoodies" href="#products" aria-label="Hoodies">
+              <div class="circle-image" style="background-image:url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80');"></div>
+              <span class="circle-label">Hoodies</span>
+            </a>
+            <a class="circle-item" data-category="jeans" href="#products" aria-label="Jeans">
+              <div class="circle-image" style="background-image:url('https://images.unsplash.com/photo-1562158070-74eee1f71100?auto=format&fit=crop&w=400&q=80');"></div>
+              <span class="circle-label">Jeans</span>
+            </a>
+            <a class="circle-item" data-category="t-shirts" href="#products" aria-label="T-Shirts">
+              <div class="circle-image" style="background-image:url('https://images.unsplash.com/photo-1495121605193-b116b5b09e12?auto=format&fit=crop&w=400&q=80');"></div>
+              <span class="circle-label">T-Shirts</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="gallery-hint">Scroll to rotate, hover to highlight, click to navigate</p>
+    </div>
+  </section>
+
+  <section id="products" class="section section-products">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Featured Products</h2>
+        <p>Premium pieces for modern Iraq street style.</p>
+      </div>
+      <div class="product-tools">
+        <input id="productSearch" type="search" placeholder="Search products..." />
+        <div class="filter-buttons">
+          <button class="btn btn-tertiary" data-filter="all">All</button>
+          <button class="btn btn-tertiary" data-filter="men">Men</button>
+          <button class="btn btn-tertiary" data-filter="women">Women</button>
+          <button class="btn btn-tertiary" data-filter="kids">Kids</button>
+        </div>
+      </div>
+      <div id="productGrid" class="product-grid"></div>
+    </div>
+  </section>
+
+  <section id="categories" class="section section-categories">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Categories</h2>
+        <p>Shop by collection</p>
+      </div>
+      <div class="category-grid">
+        <article id="category-men" class="category-card">
+          <h3>MEN</h3>
+          <p>Hoodies, T-Shirts, Jeans, Sweaters, Jackets, Cargo Pants</p>
+        </article>
+        <article id="category-women" class="category-card">
+          <h3>WOMEN</h3>
+          <p>Hoodies, Dresses, Jeans, Sweaters, Jackets</p>
+        </article>
+        <article id="category-kids" class="category-card">
+          <h3>KIDS</h3>
+          <p>Kids Hoodies, T-Shirts, Pants, Dresses</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-offer">
+    <div class="container offer-card">
+      <div>
+        <h2>Spend over 50,000 IQD and get 15% OFF</h2>
+        <p>Exclusive streetwear savings (Iraq-only shipping).</p>
+      </div>
+      <a class="btn btn-offer" href="#products">Shop Now</a>
+    </div>
+  </section>
+
+  <section class="section section-customer">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Customer of the Month</h2>
+      </div>
+      <div class="customer-card">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Customer of the month" />
+        <div>
+          <h3>Ahmed Al-Rashid</h3>
+          <p>"VEXON has redefined my street style. The quality and fit are unmatched in Baghdad's fashion scene."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-logo"><h3>VEXON</h3></div>
+      <div class="footer-nav"><a href="/">Home</a><a href="/men">Men</a><a href="/women">Women</a><a href="/kids">Kids</a><a href="/contact">Contact</a></div>
+      <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 VEXON Streetwear. All rights reserved.</p></div>
+  </footer>
+
+  <!-- Cart and Wishlist Panels -->
+  <div id="cartPanel" class="panel hidden">
+    <div class="panel-header">
+      <h3>Shopping Cart</h3>
+      <button id="closeCart" class="close-btn">&times;</button>
+    </div>
+    <div id="cartItems" class="panel-content"></div>
+    <div class="panel-footer">
+      <p>Total: <span id="cartTotal">0 IQD</span></p>
+      <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+    </div>
+  </div>
+
+  <div id="wishlistPanel" class="panel hidden">
+    <div class="panel-header">
+      <h3>Wishlist</h3>
+      <button id="closeWishlist" class="close-btn">&times;</button>
+    </div>
+    <div id="wishlistItems" class="panel-content"></div>
+  </div>
+</body>
+</html>

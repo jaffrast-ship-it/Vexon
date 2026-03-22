@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Product - VEXON Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="/">VEXON</a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/products/add">Add Product</a>
+        <a href="/admin/categories">Categories</a>
+        <a href="/admin/sizes">Sizes</a>
+        <a href="/admin/contact">Contact</a>
+        <% if (user.role === 'owner') { %>
+          <a href="/owner">Owner</a>
+        <% } %>
+      </nav>
+      <div class="header-actions">
+        <a href="/admin" class="btn btn-secondary">Admin Dashboard</a>
+        <form action="/auth/logout" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-tertiary">Logout</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <section class="section admin-section">
+    <div class="container">
+      <h1>Edit Product</h1>
+      <form action="/admin/products/<%= product.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" value="<%= product.name %>" required />
+        </div>
+        <div class="form-group">
+          <label for="price">Price (IQD)</label>
+          <input type="number" id="price" name="price" value="<%= product.price %>" required />
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="men" <%= product.category === 'men' ? 'selected' : '' %>>Men</option>
+            <option value="women" <%= product.category === 'women' ? 'selected' : '' %>>Women</option>
+            <option value="kids" <%= product.category === 'kids' ? 'selected' : '' %>>Kids</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="image">Image URL or Upload</label>
+          <input type="text" id="image" name="image" value="<%= product.image %>" placeholder="Or upload file below" />
+          <input type="file" name="image" accept="image/*" />
+        </div>
+        <div class="form-group">
+          <label for="video">Video URL</label>
+          <input type="text" id="video" name="video" value="<%= product.video %>" />
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" required><%= product.description %></textarea>
+        </div>
+        <div class="form-group">
+          <label for="tags">Tags (comma separated)</label>
+          <input type="text" id="tags" name="tags" value="<%= product.tags ? product.tags.join(',') : '' %>" />
+        </div>
+        <div class="form-group">
+          <label for="stock">Stock</label>
+          <input type="number" id="stock" name="stock" value="<%= product.stock %>" />
+        </div>
+        <div class="form-group">
+          <label for="sizes">Sizes (comma separated)</label>
+          <input type="text" id="sizes" name="sizes" value="<%= product.sizes ? product.sizes.join(',') : '' %>" />
+        </div>
+        <button type="submit" class="btn btn-primary">Update Product</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-logo"><h3>VEXON</h3></div>
+      <div class="footer-nav"><a href="/">Home</a><a href="/men">Men</a><a href="/women">Women</a><a href="/kids">Kids</a><a href="/contact">Contact</a></div>
+      <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 VEXON Streetwear. All rights reserved.</p></div>
+  </footer>
+</body>
+</html>

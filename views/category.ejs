@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VEXON <%= category.charAt(0).toUpperCase() + category.slice(1) %> Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@0.3.8/dist/lenis.min.js"></script>
+  <script defer src="https://kit.fontawesome.com/1d5f6e6140.js" crossorigin="anonymous"></script>
+  <script>
+    const products = <%- JSON.stringify(products) %>;
+  </script>
+  <script defer src="/scripts.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="/">VEXON</a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/men" class="<%= category === 'men' ? 'active' : '' %>">Men</a>
+        <a href="/women" class="<%= category === 'women' ? 'active' : '' %>">Women</a>
+        <a href="/kids" class="<%= category === 'kids' ? 'active' : '' %>">Kids</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <% if (user) { %>
+          <a href="/dashboard" class="btn btn-secondary">Dashboard</a>
+          <form action="/auth/logout" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-tertiary">Logout</button>
+          </form>
+        <% } else { %>
+          <a href="/auth/login" class="btn btn-secondary">Login</a>
+          <a href="/auth/signup" class="btn btn-primary">Sign Up</a>
+        <% } %>
+        <button class="icon-btn" aria-label="Wishlist" id="wishlistToggle"><i class="fas fa-heart"></i></button>
+        <button class="icon-btn" aria-label="Cart" id="cartToggle"><i class="fas fa-shopping-bag"></i><span id="cartCount">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <h1><%= category.charAt(0).toUpperCase() + category.slice(1) %> Collection</h1>
+      <p>Premium VEXON styles curated for streetwear identity.</p>
+      <div id="categoryProductGrid" class="product-grid">
+        <% products.forEach(product => { %>
+          <article class="product-card">
+            <a href="/product/<%= product.id %>" class="product-media" title="<%= product.name %>">
+              <img src="<%= product.image %>" loading="lazy" alt="<%= product.name %>" />
+              <video muted loop playsinline preload="auto"><source src="<%= product.video %>" type="video/mp4"></video>
+            </a>
+            <div class="product-info">
+              <h3 class="product-name"><%= product.name %></h3>
+              <p class="product-price"><%= new Intl.NumberFormat('en-US').format(product.price) %> IQD</p>
+              <div class="product-actions">
+                <button class="btn btn-primary" data-add-cart="<%= product.id %>">Add to Cart</button>
+                <button class="btn wishlist-btn" data-wishlist="<%= product.id %>" title="Wishlist"><i class="fas fa-heart"></i></button>
+              </div>
+            </div>
+          </article>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-logo"><h3>VEXON</h3></div>
+      <div class="footer-nav"><a href="/">Home</a><a href="/men">Men</a><a href="/women">Women</a><a href="/kids">Kids</a><a href="/contact">Contact</a></div>
+      <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 VEXON Streetwear. All rights reserved.</p></div>
+  </footer>
+
+  <!-- Cart and Wishlist Panels -->
+  <div id="cartPanel" class="panel hidden">
+    <div class="panel-header">
+      <h3>Shopping Cart</h3>
+      <button id="closeCart" class="close-btn">&times;</button>
+    </div>
+    <div id="cartItems" class="panel-content"></div>
+    <div class="panel-footer">
+      <p>Total: <span id="cartTotal">0 IQD</span></p>
+      <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+    </div>
+  </div>
+
+  <div id="wishlistPanel" class="panel hidden">
+    <div class="panel-header">
+      <h3>Wishlist</h3>
+      <button id="closeWishlist" class="close-btn">&times;</button>
+    </div>
+    <div id="wishlistItems" class="panel-content"></div>
+  </div>
+</body>
+</html>
